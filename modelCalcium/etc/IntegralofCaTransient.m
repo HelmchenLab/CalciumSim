@@ -1,0 +1,19 @@
+function ca_p = IntegralofCaTransient(ca_p, peel_p)
+% ca_p - parameter for calcium dynamics  
+% intvl = window from onset for integral calculation (s)
+% calculate integral for window:
+
+ca_p.integral = ca_p.amp1*(ca_p.tau1*(1-exp(-peel_p.intcheckwin/ca_p.tau1)) - ca_p.tau1/(1+ca_p.tau1/ca_p.onsettau)* ...
+                (1-exp(-peel_p.intcheckwin*(1+ca_p.tau1/ca_p.onsettau)/ca_p.tau1)) );
+ca_p.integral = ca_p.integral + ...
+                ca_p.amp2*(ca_p.tau2*(1-exp(-peel_p.intcheckwin/ca_p.tau2)) - ca_p.tau2/(1+ca_p.tau2/ca_p.onsettau)* ...
+                (1-exp(-peel_p.intcheckwin*(1+ca_p.tau2/ca_p.onsettau)/ca_p.tau2)) );
+ca_p.integral = ca_p.integral * ca_p.scale;
+
+% negative integral for subtraction check
+ca_p.negintegral = ca_p.amp1*(ca_p.tau1*(1-exp(-peel_p.negintwin/ca_p.tau1)) - ca_p.tau1/(1+ca_p.tau1/ca_p.onsettau)* ...
+                (1-exp(-peel_p.negintwin*(1+ca_p.tau1/ca_p.onsettau)/ca_p.tau1)) );
+ca_p.negintegral = ca_p.negintegral + ...
+                ca_p.amp2*(ca_p.tau2*(1-exp(-peel_p.negintwin/ca_p.tau2)) - ca_p.tau2/(1+ca_p.tau2/ca_p.onsettau)* ...
+                (1-exp(-peel_p.negintwin*(1+ca_p.tau2/ca_p.onsettau)/ca_p.tau2)) );
+ca_p.negintegral = ca_p.negintegral * -1.0 * ca_p.scale;
